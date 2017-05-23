@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Biblioteca SJ</title>
+    </h:head>
+    <h:body>
+                <ui:include src="menu.xhtml"/>
+        <h1>Cadastro de Todos os Usuarios</h1>
+        
+        <h:form>
+            <p:dataTable var="usuario" value="#{usuarioBean.consultarTodos()}" rows="5" paginator="true">
+                <p:column headerText="Nome" filterBy="#{usuario.nome}" >
+                    <h:outputText  value="#{usuario.nome}" ></h:outputText>
+                </p:column>
+               <p:column headerText="CPF">
+                    <h:outputText value="#{usuario.cpf}"></h:outputText>
+                </p:column>
+                <p:column headerText="Data de Nascimento:">
+                    <h:outputText value="#{usuario.datanas}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Sexo:">
+                    <h:outputText value="#{usuario.sexo}"></h:outputText>
+                </p:column>
+                <p:column headerText="Escolaridade:">
+                    <h:outputText value="#{usuario.ensino}"></h:outputText>
+                </p:column>
+                <p:column headerText="E-mail:">
+                    <h:outputText value="#{usuario.email}"></h:outputText>
+                </p:column>
+                <p:column headerText="Telefone:">
+                    <h:outputText value="#{usuario.telefone}"></h:outputText>
+                </p:column>
+            
+            </p:dataTable>
+            <h1></h1>
+            <p:commandButton id="voltar" value="Voltar" action="index.xhtml"></p:commandButton>
+            
+             <p:commandButton value="Excluir" oncomplete="PF('widConfDial').show();"/>
+            
+            
+            <p:confirmDialog id="confDial" visible="false" hideEffect="explode" showEffect="explode"
+                             message="Realmente deseja excluir o cadastro?" widgetVar="widConfDial">
+                <f:facet name='header'>
+                    Atenção!!!
+                </f:facet>
+                <center>
+                <p:panelGrid columns="1">
+                    <h:outputLabel for="c" value="Se 'Sim' digite o CPF A ser deletado!"></h:outputLabel>
+                <p:inputMask id='c' mask="999.999.999-99" value="#{usuarioBean.usuario.cpf}">
+                    </p:inputMask>
+                </p:panelGrid>
+                <p:commandButton value="sim" action="#{usuarioBean.excluir()}"
+                                oncomplete="PF('widConfDial').hide();PF('widDialSucesso').show()" />
+                <p:commandButton value="não" oncomplete="PF('widConfDial').hide()"/>
+                </center>
+            </p:confirmDialog>
+            
+            <p:dialog id="dialSucesso" resizable="false" visible="false" modal="true" widgetVar="widDialSucesso">
+                <h:outputText value="Deletado com sucesso!"/><br/>
+                <p:commandButton value='ok' oncomplete="PF('widConfDial').hide()"/>
+            </p:dialog>
+        </h:form>
+            
+        
+        
+    </h:body>
+</html>
+
