@@ -11,62 +11,95 @@
     </h:head>
     <h:body>
                 <ui:include src="menu.xhtml"/>
-        <h1>Cadastro de Todos os Usuarios</h1>
-        
-        <h:form>
-            <p:dataTable var="usuario" value="#{usuarioBean.consultarTodos()}" rows="5" paginator="true">
-                <p:column headerText="Nome" filterBy="#{usuario.nome}" >
-                    <h:outputText  value="#{usuario.nome}" ></h:outputText>
+
+        <h:form id="form">
+            <p:toolbar>
+                <f:facet name ="left">
+                   <h:outputText value="Todos os Usuários"/>
+                </f:facet>
+            </p:toolbar>
+            
+            <p:dataTable emptyMessage="nenhum registro encontrado." id="usuTable" var="usu" value="#{usuarioController.consultarTodos()}" 
+                         selectionMode="single" selection="#{usuarioController.usuario}" rowKey="#{usu.id}" 
+                         rows="5" paginator="true">
+                <p:column headerText="EN" style="width:16px">
+            <p:rowToggler />
+        </p:column>
+                <p:column headerText="Nome"  filterBy="#{usu.nome}">
+                    <h:outputText  value="#{usu.nome}" ></h:outputText>
                 </p:column>
                <p:column headerText="CPF">
-                    <h:outputText value="#{usuario.cpf}"></h:outputText>
+                    <h:outputText value="#{usu.cpf}"></h:outputText>
                 </p:column>
-                <p:column headerText="Data de Nascimento:">
-                    <h:outputText value="#{usuario.datanas}">
-                    <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Sexo:">
-                    <h:outputText value="#{usuario.sexo}"></h:outputText>
-                </p:column>
+                
                 <p:column headerText="Escolaridade:">
-                    <h:outputText value="#{usuario.ensino}"></h:outputText>
+                    <h:outputText value="#{usu.ensino}"></h:outputText>
                 </p:column>
                 <p:column headerText="E-mail:">
-                    <h:outputText value="#{usuario.email}"></h:outputText>
+                    <h:outputText value="#{usu.email}"></h:outputText>
                 </p:column>
                 <p:column headerText="Telefone:">
-                    <h:outputText value="#{usuario.telefone}"></h:outputText>
+                    <h:outputText value="#{usu.telefone}"></h:outputText>
                 </p:column>
             
+                <p:rowExpansion>
+            <p:panelGrid  columns="4" columnClasses="label,value">
+                
+                <h:outputText value="Rua:" />
+                <h:outputText value="#{usu.endereco.rua}" />
+ 
+                <h:outputText value="Numero" />
+                <h:outputText value="#{usu.endereco.numero}" />
+            </p:panelGrid>
+            <p:panelGrid  columns="8" columnClasses="label,value">
+                <h:outputText value="Bairro:" />
+                <h:outputText value="#{usu.endereco.bairro}"/>
+ 
+                <h:outputText value="Cidade" />
+                <h:outputText value="#{usu.endereco.cidade}" />
+                
+                <h:outputText value="Estado:" />
+                <h:outputText value="#{usu.endereco.estado}"/>
+ 
+                <h:outputText value="CEP" />
+                <h:outputText value="#{usu.endereco.cep}" />
+           
+            </p:panelGrid>
+                </p:rowExpansion>
+                
             </p:dataTable>
             <h1></h1>
-            <p:commandButton id="voltar" value="Voltar" action="index.xhtml"></p:commandButton>
+            <p:commandButton process="usuTable" update="usuDetail" icon="ui-icon-search" value="View"  oncomplete="PF('widDialVisualiza').show()"/>
+               <p:commandButton value="Excluir" action="#{usuarioController.excluir()}"
+                                   
+                                     update='usuTable'></p:commandButton>
+            <p:commandButton  icon="ui-icon-arrowrefresh-1-w" value="Alterar"  action="AlterarUsuario.xhtml"/>
+          
             
-             <p:commandButton value="Excluir" oncomplete="PF('widConfDial').show();"/>
-            
-            
-            <p:confirmDialog id="confDial" visible="false" hideEffect="explode" showEffect="explode"
-                             message="Realmente deseja excluir o cadastro?" widgetVar="widConfDial">
-                <f:facet name='header'>
-                    Atenção!!!
-                </f:facet>
-                <center>
-                <p:panelGrid columns="1">
-                    <h:outputLabel for="c" value="Se 'Sim' digite o CPF A ser deletado!"></h:outputLabel>
-                <p:inputMask id='c' mask="999.999.999-99" value="#{usuarioBean.usuario.cpf}">
-                    </p:inputMask>
+           <p:dialog header="Usuário" widgetVar="widDialVisualiza" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="usuDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty usuarioController.consultarTodos()}" columnClasses="label,value">
+               
+                    <h:outputText value="Nome:"/>
+                    <h:outputText value="#{usuarioController.usuario.nome}"/>
+                    <h:outputText value="CPF:"/>
+                    <h:outputText value="#{usuarioController.usuario.cpf}"/>
+                    <h:outputText value="Data do Nascimento:"/>
+                    <h:outputText value="#{usuarioController.usuario.datanas}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime></h:outputText>
+                    <h:outputText value="Sexo:"/>
+                    <h:outputText value="#{usuarioController.usuario.sexo}"/>
+                    <h:outputText value="Escolaridade:"/>
+                    <h:outputText value="#{usuarioController.usuario.ensino}"/>
+                    <h:outputText value="E-mail:"/>
+                    <h:outputText value="#{usuarioController.usuario.email}"/>
+                    <h:outputText value="Telefone:"/>
+                    <h:outputText value="#{usuarioController.usuario.telefone}"/>
                 </p:panelGrid>
-                <p:commandButton value="sim" action="#{usuarioBean.excluir()}"
-                                oncomplete="PF('widConfDial').hide();PF('widDialSucesso').show()" />
-                <p:commandButton value="não" oncomplete="PF('widConfDial').hide()"/>
-                </center>
-            </p:confirmDialog>
-            
-            <p:dialog id="dialSucesso" resizable="false" visible="false" modal="true" widgetVar="widDialSucesso">
-                <h:outputText value="Deletado com sucesso!"/><br/>
-                <p:commandButton value='ok' oncomplete="PF('widConfDial').hide()"/>
-            </p:dialog>
+        </p:outputPanel>
+           </p:dialog>
+                 
+                  
         </h:form>
             
         

@@ -51,5 +51,7 @@ Contributor(s):
     <property name="hibernate.hbm2ddl.auto">update</property>
     <mapping class="br.com.bibliotecasj.Model.Usuario"/>
     <mapping class="br.com.bibliotecasj.Model.Endereco"/>
+    <mapping class="br.com.bibliotecasj.Model.Login"/>
+    <mapping class="br.com.bibliotecasj.Model.Frequencia"/>
   </session-factory>
 </hibernate-configuration>

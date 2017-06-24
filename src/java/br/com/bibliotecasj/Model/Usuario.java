@@ -22,17 +22,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@NamedQueries({
+@NamedQuery(name = "Usuario.listar", query = "SELECT usuario FROM Usuario usuario"),
+@NamedQuery(name = "Usuario.BuscarCpf", query = "SELECT usuario FROM Usuario usuario WHERE usuario.cpf = :cpf")
+})
 public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name ="id_pessoa")
+    
     private int id;
     @Column(length = 30)
     private String nome;

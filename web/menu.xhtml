@@ -2,12 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Biblioteca SJ</title>
     </h:head>
-    <h:body>
-       <h:form id="formMenu">
+    <c:if test="#{controllerLoginLogado.usuarioLogado == null}">
+            <script>
+                location.href = "Login.xhtml?faces-redirect=true";
+            </script>
+</c:if>
+    <h:body style="background-image: url('#{resource['aa.jpg']}')">
+        
+                <p:layoutUnit position="north" size="100">  
+                    <p:graphicImage  library="image" name="Imagem2.png" width="700px" ></p:graphicImage>
+                    <h:outputLabel value="#{ControllerLoginLogado.login.login}"/>
+                              
+                </p:layoutUnit>
+       
+        <h:form id="formMenu" >
+            <p:growl id="growl" life="10000" showDetail="true" showSummary="false"/> 
             <p:menubar>
                 <p:menuitem icon="ui-icon-home" value="home" url="index.xhtml"/>
                 <p:submenu icon="ui-icon-pencil" label="Cadastro">
@@ -17,13 +32,82 @@
                     
                 </p:submenu>
                 <p:submenu label="Frequencia">
-                    <p:menuitem value="Visitantes"/>
-                    <p:menuitem value="Usuarios"/>
+                    <p:menuitem value="Nova" oncomplete="PF('fre').show()"/>
+                    <p:menuitem value="Lista de Frequência" url="ListaDeFrequencia.xhtml"/>
                 </p:submenu>
-                <p:menuitem icon="ui-icon-closethick" value="Sair" url=""/>
+                <p:submenu label="Login">
+                    <p:menuitem value="Novo Login" oncomplete="PF('dlg').show()"/>
+                    <p:menuitem value="Alterar Login" oncomplete="PF('alt').show()"/>
+                <p:menuitem icon="ui-icon-closethick" value="Sair" action="#{controllerLoginLogado.logout()}"/>
+                </p:submenu>
             </p:menubar>
             <p:separator/>
         </h:form>
+        
+        <h:form id="log">
+            <p:growl id="growl" life="10000" showDetail="true" showSummary="false"/> 
+            
+         <p:dialog header="Login" widgetVar="dlg" resizable="false" visible="false" modal="true" draggable="false">
+        <p:panelGrid columns="2">
+            <f:facet name ="header">Cadastro de Novo Login</f:facet>   
+            <h:outputLabel value="Login:"/>
+            <p:inputText id="login" value="#{loginController.login.login}"
+                         required="true" requiredMessage="Login Obrigatorio"/>
+            <h:outputLabel value="senha:"/>
+            <p:password id="senha" value="#{loginController.login.senha}"  
+                        required="true" requiredMessage="Login Obrigatorio"></p:password>
+            <f:facet name="footer">
+                <center><p:commandButton value="cadastrar" action="#{loginController.salvar(loginController.login)}" oncomplete="PF('dlg').hide()" update="log"/></center>
+            
+            </f:facet>
+        </p:panelGrid>
+         </p:dialog>
+            </h:form> 
+            <h:form id="freq">
+                 <p:growl id="growl" life="10000" showDetail="true" showSummary="false"/> 
+           
+        <p:dialog header="Frequencia" widgetVar="fre" resizable="false" visible="false" modal="true" draggable="false">
+        <p:panelGrid columns="2">
+            <f:facet name ="header">Registro de Frequencia</f:facet>
+            <h:outputLabel value="Nome:"/>
+            <h:inputText id="nome" value="#{frequenciaController.frequencia.nome}" required="true"
+                             requiredMessage="Nome é obrigatória"></h:inputText>
+            <h:outputLabel value="cpf:"/>
+            <p:inputMask id="cpf" mask='999.999.999-99' value="#{frequenciaController.frequencia.cpf}" required="true"
+                             requiredMessage="CPF é obrigatória"></p:inputMask>
+            <h:outputLabel value="Descreção:"/>
+            <h:inputText id="des" value="#{frequenciaController.frequencia.descricao}" required="true"
+                             requiredMessage="Descrição é obrigatória"></h:inputText>
+            
+            <f:facet name="footer">
+                <center><p:commandButton value="cadastrar" action="#{frequenciaController.salvar(frequenciaController.frequencia)}" oncomplete="PF('fre').hide()" update="freq"/></center>
+            
+            </f:facet>
+        </p:panelGrid>
+         </p:dialog>
+            </h:form>
+        <h:form id="alter">
+             <p:growl id="growl" life="10000" showDetail="true" showSummary="false"/> 
+           
+            <p:dialog header="Login" widgetVar="alt" resizable="false" visible="false" modal="true" draggable="false">
+     
+        <p:panelGrid columns="2">
+            <f:facet name ="header">Alterar Login</f:facet>   
+            <h:outputLabel value="Login:"/>
+            <p:inputText id="login" value="#{controllerLoginLogado.usuarioLogado.login}"
+                         required="true" requiredMessage="Login Obrigatorio"/>
+            <h:outputLabel value="senha:"/>
+            <p:password id="senha" value="#{controllerLoginLogado.usuarioLogado.senha}"  
+                        required="true" requiredMessage="Senha Obrigatorio"></p:password>
+            <f:facet name="footer">
+                <center><p:commandButton value="alterar" action="#{controllerLoginLogado.alterar(controllerLoginLogado.usuarioLogado)}" update="alter"/>
+                <p:commandButton value="excluir" action="#{controllerLoginLogado.excluir()}" update="alter"/></center>
+            
+            </f:facet>
+        </p:panelGrid>
+         </p:dialog>
+        </h:form>
+        
     </h:body>
 </html>
 

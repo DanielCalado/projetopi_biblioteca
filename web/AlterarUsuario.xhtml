@@ -5,96 +5,97 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      
     <h:head>
         <title>Biblioteca SJ</title>
     </h:head>
-    <h:body>
-      <ui:include src="menu.xhtml"/>
-        <h1>Alterar Cadastro</h1>
-        <h:form>
-           
-                <p:panelGrid columns="3">
-                    <h:outputLabel for='c' value="CPF"></h:outputLabel>
-                    <p:inputMask id='c' mask='999.999.999-99' value="#{usuarioBean.usuario.cpf}">
-                    </p:inputMask>
-                    <p:commandButton id="usuario" value="Buscar" update="@form"
-                                     action="#{usuarioBean.consultar(usuarioBean.usuario.cpf)}"></p:commandButton>  
-                </p:panelGrid>
-            <h:inputHidden value="#{usuarioBean.usuario.id}"></h:inputHidden>
-            <br></br>
-            
-            <p:panelGrid columns="2" id="coluna">
-                <h:outputLabel for="nome" value="Nome:"></h:outputLabel>
-                <h:inputText id="nome" value="#{usuarioBean.usuario.nome}"></h:inputText>
-                <h:outputLabel value="CPF:"></h:outputLabel>
-                <h:outputText value="#{usuarioBean.usuario.cpf}"></h:outputText>
-                <h:outputLabel for="datanas" value="Data de Nascimento:"></h:outputLabel>
-                <p:inputMask id="datanas" mask="99/99/9999" value="#{usuarioBean.usuario.datanas}">
-                             <f:convertDateTime pattern="dd/MM/yyyy"/></p:inputMask>
-                <p:outputLabel value="Sexo" for="sexo" ></p:outputLabel>
-                <p:selectOneRadio id= "sexo" value="#{usuarioBean.usuario.sexo}">
+     <h:body>
+        
+        <ui:include src="menu.xhtml"/>
+        
+        
+         <h:form id="cadastroForm">
+             <p:fieldset legend="Cadastro">
+             <h1></h1>
+             <p:growl id="growl" life="10000" showDetail="true" showSummary="false"/> 
+                <h:inputHidden value="#{usuarioController.usuario.id}"></h:inputHidden>
+            <p:panelGrid columns="4" id="coluna1" >
+                <p:outputLabel for="nome" value="Nome:"></p:outputLabel>
+                <p:inputText id="nome"  value="#{usuarioController.usuario.nome}" required="true"
+                             requiredMessage="Nome é obrigatória"></p:inputText>
+               
+                <p:outputLabel for="cpf" value="CPF:"></p:outputLabel>
+                <p:inputMask id="cpf" mask='999.999.999-99' value="#{usuarioController.usuario.cpf}"  required="true"
+                             requiredMessage="CPF é obrigatória"></p:inputMask>
+                
+                <p:outputLabel for="datanas" value="Data de Nascimento:"></p:outputLabel>
+                <p:inputMask id="datanas" mask="99/99/9999" value="#{usuarioController.usuario.datanas}" required="true"
+                             requiredMessage="Data de Nascimento é obrigatória">
+                             <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:inputMask>
+                <p:outputLabel value="Sexo:" for="sexo" ></p:outputLabel>
+                <p:selectOneRadio id= "sexo" value="#{usuarioController.usuario.sexo}" required="true"
+                             requiredMessage="Sexo é obrigatória">
                                <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
                                <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
                 </p:selectOneRadio>  
-                <h:outputLabel for="ensino" value="Escolaridade" />
-                <h:selectOneMenu id="ensino" value="#{usuarioBean.usuario.ensino}" required="true" label="ensino">
+                <p:outputLabel for="ensino" value="Escolaridade:" />
+                <p:selectOneMenu id="ensino" value="#{usuarioController.usuario.ensino}" label="ensino" required="true"
+                             requiredMessage="Escolaridade é obrigatória">
                 <f:selectItem itemLabel="Nunca Estudou" itemValue="Nunca Estudou" />
                 <f:selectItem itemLabel="Fundamental Imcompleto" itemValue="Fundamental Imcompleto" />
                 <f:selectItem itemLabel="Fundamental Completo" itemValue="Fundamental Completo" />
                 <f:selectItem itemLabel="Medio Imcompleto" itemValue="Medio Imcompleto" />
                 <f:selectItem itemLabel="Medio Completo" itemValue="Medio Completo" />
                 <f:selectItem itemLabel="Superior" itemValue="Superior" />
-            </h:selectOneMenu>
+            </p:selectOneMenu>
            
-             <h:outputLabel for="email" value="E-mail:"></h:outputLabel>
-                <h:inputText id="email" value="#{usuarioBean.usuario.email}"></h:inputText>
-                <h:outputLabel for="telefone" value="Telefone:"></h:outputLabel>
-                <p:inputMask id="telefone" mask='(99)99999-9999' value="#{usuarioBean.usuario.telefone}"></p:inputMask>
-             </p:panelGrid>
-            <h1>Endereço</h1>
-            <h:inputHidden value="#{usuarioBean.usuario.endereco.id}"></h:inputHidden>
-            <p:panelGrid columns="4" id="coluna2">
-                 <h:outputLabel for="rua" value="Rua:"></h:outputLabel>
-                        <h:inputText id="rua" value="#{usuarioBean.usuario.endereco.rua}"></h:inputText>
-                        <h:outputLabel for="num" value="Numero:"></h:outputLabel>
-                        <h:inputText id="num" value="#{usuarioBean.usuario.endereco.numero}"></h:inputText>
-                    <h:outputLabel for="bairro" value="Bairro:"></h:outputLabel>
-                        <h:inputText id="bairro" value="#{usuarioBean.usuario.endereco.bairro}"></h:inputText>
-                    <h:outputLabel for="cidade" value="Cidade:"></h:outputLabel>
-                        <h:inputText id="cidade" value="#{usuarioBean.usuario.endereco.cidade}"></h:inputText>
-                    <h:outputLabel for="estad" value="Estado:"></h:outputLabel>
-                    <h:outputLabel for="estado" value="PERNAMBUCO"></h:outputLabel>
-                    <h:outputLabel for="cep" value="CEP:"></h:outputLabel>
-                    <p:inputMask id="cep" mask= "99999-999"  value="#{usuarioBean.usuario.endereco.cep}"></p:inputMask>
-                    
-           
-            </p:panelGrid>
+             <p:outputLabel for="email" value="E-mail:"></p:outputLabel>
+                <p:inputText id="email" value="#{usuarioController.usuario.email}" required="true"
+                             requiredMessage="E-mail é obrigatória"></p:inputText>
+                <p:outputLabel for="telefone" value="Telefone:"></p:outputLabel>
+                <p:inputMask id="telefone" mask='(99)99999-9999' value="#{usuarioController.usuario.telefone}" required="true"
+                             requiredMessage="Telefone é obrigatória"></p:inputMask>
+                
             
-            <p:commandButton value="Alterar" oncomplete="PF('widConfDial').show();"/>
-            
-            
-            <p:confirmDialog id="confDial" visible="false" hideEffect="explode" showEffect="explode"
-                             message="Realmente deseja alterar o cadastro?" widgetVar="widConfDial"
-                             >
-                <f:facet name='header'>
-                    Atenção!!!
-                </f:facet>
-                <center>
-                <p:commandButton value="sim" action="#{usuarioBean.alterar()}"
-                                oncomplete="PF('widConfDial').hide();PF('widConfDial2').show()" />
-                <p:commandButton value="não" oncomplete="PF('widConfDial').hide()"/>
-                </center>
-            </p:confirmDialog>
+             
+           </p:panelGrid>
                
-           <p:confirmDialog id="confDial2" visible="false" hideEffect="explode" showEffect="explode"
-                             message="Cadastro efetuado com sucesso!" widgetVar="widConfDial2"
-                             >
-               <center>
-                <p:commandButton value="sim" action="index.xhtml"/>
-                <p:commandButton value="novo" action="ConsultarTodos.xhtml"/>
-               </center>
-           </p:confirmDialog>
-        </h:form>
+             </p:fieldset>
+             <h1></h1>
+             <p:fieldset legend="Endereço">
+             <h1></h1>
+            <h:inputHidden value="#{usuarioController.usuario.endereco.id}"></h:inputHidden>
+
+                    <p:panelGrid columns="4" id="coluna">
+                        <p:outputLabel for="rua" value="Rua:"></p:outputLabel>
+                        <p:inputText id="rua" value="#{usuarioController.usuario.endereco.rua}"></p:inputText>
+                        <p:outputLabel for="num" value="Numero:"></p:outputLabel>
+                        <p:inputText id="num" value="#{usuarioController.usuario.endereco.numero}"></p:inputText>
+                    <p:outputLabel for="bairro" value="Bairro:"></p:outputLabel>
+                        <p:inputText id="bairro" value="#{usuarioController.usuario.endereco.bairro}"></p:inputText>
+                    <p:outputLabel for="cidade" value="Cidade:"></p:outputLabel>
+                        <p:inputText id="cidade" value="#{usuarioController.usuario.endereco.cidade}"></p:inputText>
+                    <p:outputLabel  value="Estado:"></p:outputLabel>
+                    <p:outputLabel value="PERNAMBUCO"></p:outputLabel>
+                    <p:outputLabel for="cep" value="CEP:"></p:outputLabel>
+                    <p:inputMask id="cep" mask= "99999-999"  value="#{usuarioController.usuario.endereco.cep}"></p:inputMask>
+                    
+                    </p:panelGrid> 
+             </p:fieldset>
+             <h1></h1>
+             
+             
+                     <p:commandButton value="Voltar" action="index.xhtml"></p:commandButton>
+                <p:commandButton id="com" value="Salvar" icon="ui-icon-disk" action="#{usuarioController.alterar(usuarioController.usuario)}"
+update="@form" ></p:commandButton>
+                 
+             <p:separator></p:separator>
+       </h:form>  
+       <p:toolbar>
+                <f:facet name ="left">
+                   <h:outputText value="#{Date}"/>
+                </f:facet>
+            </p:toolbar>
     </h:body>
 </html>
-

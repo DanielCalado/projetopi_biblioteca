@@ -5,62 +5,62 @@
  */
 package br.com.bibliotecasj.Model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
+
 /**
  *
  * @author Aluno
  */
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.TemporalType;
-import javax.persistence.Temporal;
-import javax.persistence.Column;
-
 @Entity
-public class Login implements Serializable {
+@NamedQueries({
+@NamedQuery(name = "Login.listar", query = "SELECT login FROM Login login"),
+@NamedQuery(name = "Login.Buscarlog", query = "SELECT login FROM Login login WHERE login.login = :login")
+})
+public class Login {
     @Id
-    @Column(name="id", nullable=false, unique=true)
+    @GeneratedValue
     private int id;
-    @Column(name="userNome", nullable=false, unique=true)
-    private String nomeUsuario;
-    @Column(name="senha", nullable=false, unique=false)
+    private String login;
     private String senha;
-    @Column(name="UltAcesso", unique=true)
-    @Temporal(TemporalType.DATE)
-    private Date ultimoAcesso;
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public Login(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+    }
+
+    public Login() {
     }
 
     public int getId() {
         return id;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public String getSenha() {
         return senha;
-    }
-
-    public Date getUltimoAcesso() {
-        return ultimoAcesso;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    public void setUltimoAcesso(Date ultimoAcesso) {
-        this.ultimoAcesso = ultimoAcesso;
+    @Override
+    public String toString() {
+        return "Login{" + "id=" + id + ", login=" + login + ", senha=" + senha + '}';
+    
     }
-    
-    
 }
+    
+

@@ -7,21 +7,25 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:separator/>
+    <h:head>
+        <title>Biblioteca SJ</title>
+    </h:head>
+    <h:body>
         <h:form>
         <h1>Bem Vindo a Biblioteca SJ</h1>
         <h2>Excluir Usuario</h2>
         <p:panelGrid columns="3">
                     <h:outputLabel for="c" value="CPF"></h:outputLabel>
-                    <p:inputMask id='c' mask="999.999.999-99" value="#{usuarioBean.usuario.cpf}">
+                    <p:inputMask id='c' mask="999.999.999-99" value="#{usuarioController.usuario.cpf}">
                     </p:inputMask>
                     <p:commandButton id="usuario" value="Excluir" update="@form"
-                                     action="#{usuarioBean.excluir()}"></p:commandButton>  
+                                     action="#{usuarioController.excluir()}"></p:commandButton>  
                            
         </p:panelGrid>
         <h1></h1>
                     <p:commandButton id="inicio" value="Inicio" update="@form" action="index.xhtml"></p:commandButton>
                     
         </h:form>
-    
+    </h:body>
 </html>
 
